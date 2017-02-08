@@ -1,4 +1,6 @@
 # Chords
+A WordPress plug-in.
+
 Add chords using shortcodes!
 
 ## Usage:
