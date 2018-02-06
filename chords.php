@@ -8,12 +8,14 @@
 */
 
 // Register and invoke the javascript
-wp_enqueue_script('chordsSetup', plugin_dir_url(__FILE__) . 'chordsSetup.js');
-wp_enqueue_script('showHide', plugin_dir_url(__FILE__) . 'showHide.js');
+wp_enqueue_script('chords', plugin_dir_url(__FILE__) . 'chords.js');
 
 // Replace [chords] with the div and setup the style
 function chords($atts, $content = "") {
-  return "<div id=\"chords\">$content</div><script>chordsSetup();</script>";
+  // chordsSetup is called twice: first time for a first impagination, second
+  // time when all resources are loaded: the page can change during the loading
+  // and margins may need to be recalculated.
+  return "<div id=\"chords\">$content</div><script>chordsSetup(); window.onload = chordsSetup;</script>";
 }
 add_shortcode('chords', 'chords');
 
