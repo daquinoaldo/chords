@@ -1,31 +1,29 @@
 <?php
 /*
 * Plugin Name: Chords
-* Description: Add chords using shortcodes! Usage: [showHide]Click-me to hide chords![showHide] [chords] [A]Lorem ip[E7]sum... [/Chords]
-* Version: 1.0
+* Description: Add chords using shortcodes!
+* Version: 2.0
 * Author: Aldo D'Aquino
-* Author URI: http://aldodaquino.com
+* Author URI: http://ald.ooo
 */
 
-// Register and invoke the javascript
-wp_enqueue_script('chords', plugin_dir_url(__FILE__) . 'chords.js');
+// TODO: settings page
+add_option("chord_sep_l", "[");
+add_option("chord_sep_r", "]");
 
-// Replace [chords] with the div and setup the style
-function chords($atts, $content = "") {
-  // chordsSetup is called twice: first time for a first impagination, second
-  // time when all resources are loaded: the page can change during the loading
-  // and margins may need to be recalculated.
-  return "<div id=\"chords\">$content</div><script>chordsSetup(); window.onload = chordsSetup;</script>";
+// Replace everything inside [chords] with the rendered html
+add_shortcode('chords', function($atts, $content = "") {
+  $content = str_replace(get_option("chord_sep_l", "{"), "<span class=\"chord\">", $content);
+  $content = str_replace(get_option("chord_sep_r", "}"), "</span>", $content);
+  return '<script src="'.plugin_dir_url(__FILE__).'chords.js"></script><section id="chords">'.$content.'</section>';
+});
+
+// Replace [toggleChords] with the button
+function toggleChords($atts, $content = "Toggle chords") {
+  return '<button onclick=\'[...document.getElementsByClassName("chord")]
+  .forEach(c => c.style.display = c.style.display === "none" ? "inline-block" : "none")\'>'.$content.'</button>';
 }
-add_shortcode('chords', 'chords');
-
-
-// Replace [showHide] with the button
-function showHide($atts, $content = "") {
-  if (!empty($atts[text])) return "<button onclick=\"showHide()\">$atts[text]</button>";
-  if (!empty($content)) return "<button onclick=\"showHide()\">$content</button>";
-  return "Show/hide chords";
-}
-add_shortcode('showHide', 'showHide');
+add_shortcode('toggleChords', 'toggleChords');
+add_shortcode('showHide', 'toggleChords');  // backwards compatibility
 
 ?>
