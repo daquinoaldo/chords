@@ -2,6 +2,10 @@
 A WordPress plug-in. Add chords using shortcodes!   
 **The chords will be shown exactly where you want on all devices regardless of the font!**
 
+## ⚠️ Deprecation notice
+
+I don't use WordPress anymore, so I dismissed this project.
+
 ## Usage:
 `[showHide]Click me[showHide]` display a button to show or hide chords.  
 `[chords]...[/chords]` delimit the lyrics of the song to which you want to put chords.  
